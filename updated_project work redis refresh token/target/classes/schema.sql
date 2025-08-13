@@ -1,0 +1,26 @@
+CREATE TABLE IF NOT EXISTS users (
+  id BIGINT AUTO_INCREMENT PRIMARY KEY,
+  username VARCHAR(100) NOT NULL UNIQUE,
+  password VARCHAR(200) NOT NULL
+) ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS user_roles (
+  user_id BIGINT NOT NULL,
+  role VARCHAR(20) NOT NULL,
+  KEY idx_user_roles_user (user_id),
+  CONSTRAINT fk_user_roles_user
+    FOREIGN KEY (user_id) REFERENCES users(id)
+    ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS students (
+  id BIGINT AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(100) NOT NULL,
+  email VARCHAR(150) NOT NULL UNIQUE,
+  age INT,
+  user_id BIGINT NOT NULL,
+  KEY idx_students_user (user_id),
+  CONSTRAINT fk_students_user
+    FOREIGN KEY (user_id) REFERENCES users(id)
+    ON DELETE RESTRICT ON UPDATE CASCADE
+) ENGINE=InnoDB;
